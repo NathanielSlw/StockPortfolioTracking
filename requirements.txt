@@ -1,0 +1,7 @@
+Flask==3.1.0
+Flask-APScheduler==1.13.1
+Flask-MySQL==1.6.0
+Flask-SQLAlchemy==3.1.1
+mysql-connector-python==9.2.0
+APScheduler==3.11.0
+yfinance==0.2.52

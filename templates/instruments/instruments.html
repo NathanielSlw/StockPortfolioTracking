@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Instruments</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+    <script src="{{ url_for('static', filename='javascript/instruments.js') }}" defer></script>
+  </head>
+  <body>
+    <!-- Barre de navigation -->
+    <div class="navbar">
+      <a href="/fonds">Fonds</a>
+      <a href="/instruments" class="active">Instruments</a>
+      <a href="/positions">Positions</a>
+    </div>
+
+    <div class="container mt-4">
+      <h1>Instruments</h1>
+
+      <!-- Champ de recherche en fonction du Type ou du Nom de l'instrument -->
+      <form id="search-form" class="mb-3">
+        <div class="input-group">
+          <input type="text" class="form-control" id="search-input" name="search" placeholder="Rechercher par nom ou type..." />
+          <button type="button" class="btn btn-custom-black" id="search-button">Rechercher</button>
+          <button type="button" class="btn btn-secondary" id="reset-button">Réinitialiser</button>
+        </div>
+      </form>
+
+      <!-- Bouton pour ajouter un instrument -->
+      <button type="button" class="btn btn-custom-black mt-3" data-bs-toggle="modal" data-bs-target="#addInstrumentModal">Ajouter un instrument</button>
+
+      <table class="table table-bordered mt-3" id="instruments-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Valeur Unitaire Actuelle</th>
+            <th>Type</th>
+            <th>TICKER</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for instrument in instruments %}
+            <tr>
+              <td>{{ instrument.id }}</td>
+              <td>{{ instrument.nom }}</td>
+              <td>{{ instrument.valeur_unitaire_actuelle }}</td>
+              <td>{{ instrument.type_instrument }}</td>
+              <td>{{ instrument.code_ISIN }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <!-- Espace en bas -->
+      <div style="height: 4rem;"></div>
+    </div>
+
+    <!-- Modale pour ajouter un nouvel instrument à la table SQL -->
+    {% include '/instruments/modals/ajouter_instruments_db.html' %}
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

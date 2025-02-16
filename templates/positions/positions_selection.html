@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Choisir un Fonds</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  </head>
+  <body>
+    <!-- Barre de navigation -->
+    <div class="navbar">
+      <a href="/fonds">Fonds</a>
+      <a href="/instruments">Instruments</a>
+      <a href="/positions" class="active">Positions</a>
+    </div>
+
+    <div class="container mt-4">
+      <h1>Sélectionner un Fonds</h1>
+      <form action="/positions" method="get" id="fondsForm">
+        <label for="fondsSelect">Choisir un fonds :</label>
+        <select id="fondsSelect" class="form-control">
+          <option value="">-- Sélectionner un fonds --</option>
+          {% for fonds in fonds %}
+            <option value="{{ fonds.id }}">{{ fonds.nom }}</option>
+          {% endfor %}
+        </select>
+      </form>
+    </div>
+
+    <script>
+      document.getElementById('fondsSelect').addEventListener('change', function () {
+        let selectedFonds = this.value
+        if (selectedFonds) {
+          window.location.href = '/positions/' + selectedFonds
+        }
+      })
+    </script>
+  </body>
+</html>

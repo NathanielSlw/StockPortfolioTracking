@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Positions</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="{{ url_for('static', filename='javascript/positions.js') }}"></script>
+</head>
+<body>
+
+    <!-- Barre de navigation -->
+    <div class="navbar">
+        <a href="/fonds">Fonds</a>
+        <a href="/instruments">Instruments</a>
+        <a href="/positions" class="active">Positions</a>
+    </div>
+
+    <div class="container mt-4">
+        <h1>Positions pour le Fonds : {{ fonds_nom }}</h1>
+
+        <!-- Sélecteur de fonds -->
+        <div class="mb-3">
+            <label for="fondsSelect">Changer de fonds :</label>
+            <select id="fondsSelect" class="form-control">
+                {% for fonds in fonds_list %}
+                    <option value="{{ fonds.id }}" {% if fonds.id == fonds_id %}selected{% endif %}>{{ fonds.nom }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Performance du portefeuille -->
+        <div class="mt-4 p-3 bg-light border rounded">
+            <h4>Performance globale du fond</h4>
+            <p><strong>Valeur actuelle du fond :</strong> <span id="valeur-actuelle">-</span></p>
+            <p><strong>Total Montant Investi :</strong> <span id="montant-total-investi">-</span></p>
+            <p><strong>Performance globale :</strong>
+                <span id="performance-globale">-</span>
+            </p>
+            <p><strong>Performance globale (%) :</strong>
+                <span id="performance-globale-pourcentage">-</span>
+            </p>
+            <p><strong>Montant des espèces disponibles :</strong> <span id="montant-especes"> -</span></p>
+        </div>
+        
+        <table class="table table-bordered mt-4">
+            <thead>
+                <tr>
+                    <th>Instrument</th>
+                    <th>Quantité Totale</th>
+                    <th>Prix d'Achat Moyen</th>
+                    <th>Montant Investi</th>
+                    <th>Cours Actuel</th>
+                    <th>Valeur Actuelle</th>
+                    <th>Performance (%)</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for position in positions %}
+                <tr>
+                    <td>{{ position.nom_instrument }}</td>
+                    <td>{{ position.total_quantite }}</td>
+                    <td class="price-value" data-value="{{ position.prix_moyen }}"></td>
+                    <td class="price-value" data-value="{{ position.prix_total_investi }}"></td>
+                    <td class="price-value" data-value="{{ position.valeur_unitaire_actuelle }}"></td>
+                    <td class="price-value" data-value="{{ position.prix_reel }}"></td>
+                    <td class="{{ 'text-success' if position.plus_value_pourcentage > 0 else 'text-danger' }}">
+                        {{ position.plus_value_pourcentage | round(2) }} %
+                    </td>
+                    <td>
+                        <button type="button"
+                            class="btn btn-danger"
+                            data-bs-toggle="modal"
+                            data-bs-target="#vendreModal"
+                            data-instrument-id="{{ position.instrument_id }}"
+                            data-quantite-max="{{ position.total_quantite }}">
+                            Vendre
+                        </button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <button id="exportCSV" class="btn btn-custom-black mt-3">Exporter le tableau en CSV</button>
+
+        <!-- Graphique pour visualiser la répartition des positions -->
+        <h3 class="mt-4">Répartition des Positions du Fonds</h3>
+        <div class="chart-container mt-3">
+            <canvas id="repartitionGraph"></canvas>
+        </div>
+
+        <!-- Historique d'achat -->
+        <h3 class="mt-4">Historique d'achat</h3>
+        <table class="table table-bordered mt-3" id="historique-table">
+            <thead>
+                <tr>
+                    <th>Instrument</th>
+                    <th>Quantité</th>
+                    <th>Prix Unitaire</th>
+                    <th>Date d'Achat</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- ICI : L'historique sera rempli dynamiquement par JavaScript -->
+            </tbody>
+        </table>
+
+        <!-- Espace en bas -->
+        <div style="height: 4rem;"></div>
+
+        <!-- Modale pour vendre -->
+        <div class="modal fade" id="vendreModal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Vendre des parts</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="venteForm">
+                            <input type="hidden" id="instrumentId" name="instrument_id">
+                            <input type="hidden" id="fondsId" name="fonds_id" value="{{ fonds_id }}">
+                            <div class="mb-3">
+                                <label for="quantiteVente" class="form-label">Quantité à vendre</label>
+                                <input type="number" class="form-control" id="quantiteVente" name="quantite" min="1" required>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-custom-black" onclick="vendreParts()">Confirmer la vente</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const positionsData = {{ positions | tojson | safe }};
+    </script>
+
+    <!-- Scripts Bootstrap -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+</body>
+</html>

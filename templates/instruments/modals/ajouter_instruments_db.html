@@ -1,0 +1,34 @@
+<!-- Modale pour ajouter un nouvel instrument à la table SQL -->
+<div class="modal fade" id="addInstrumentModal" tabindex="-1" aria-labelledby="addInstrumentModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addInstrumentModalLabel">Ajouter un nouvel instrument</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/add_instrument" method="POST">
+          <div class="mb-3">
+            <label for="nom" class="form-label">Nom de l'instrument</label>
+            <input type="text" class="form-control" id="nom" name="nom" required />
+          </div>
+          <div class="mb-3">
+            <label for="type_instrument" class="form-label">Type de l'instrument</label>
+            <select class="form-select" id="type_instrument" name="type_instrument" required>
+              <option value="Action">Action</option>
+              <option value="ETF">ETF</option>
+              <option value="Matières premières">Matières premières</option>
+              <option value="Obligation">Obligation</option>
+              <option value="Crypto-monnaie">Crypto-monnaie</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="code_ISIN" class="form-label">Ticker</label>
+            <input type="text" class="form-control" id="code_ISIN" name="code_ISIN" required />
+          </div>
+          <button type="submit" class="btn btn-custom-black">Ajouter l'instrument</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

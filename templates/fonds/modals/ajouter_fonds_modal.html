@@ -1,0 +1,28 @@
+<!-- Modale pour ajouter un fonds -->
+<div class="modal fade" id="ajouterFondsModal" tabindex="-1" aria-labelledby="ajouterFondsModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="ajouterFondsModalLabel">Créer un Nouveau Fonds</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="/ajouter_fonds" method="post">
+          <div class="mb-3">
+            <label for="nom" class="form-label">Nom du Fonds</label>
+            <input type="text" id="nom" name="nom" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <input type="text" id="description" name="description" class="form-control" required />
+          </div>
+          <div class="mb-3">
+            <label for="date_creation" class="form-label">Date de Création</label>
+            <input type="date" id="date_creation" name="date_creation" class="form-control" required />
+          </div>
+          <button type="submit" class="btn btn-custom-black">Ajouter</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
