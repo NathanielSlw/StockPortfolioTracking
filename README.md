@@ -69,11 +69,11 @@ python app.py
 
 ### Screenshots 
 
-![[fonds.png]]
+![Fonds](Images/fonds.png)
 
-![[instruments.png]]
+![Instruments](Images/instruments.png)
 
-![[positions.png]]
+![Positions](Images/positions.png)
 
 ### Technologies Utilisées 
 * Python avec Flask
