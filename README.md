@@ -2,7 +2,7 @@
 
 Ce projet consiste en une application web permettant de suivre les portefeuilles d'investissement. L'utilisateur peut visualiser les fonds disponibles, gérer les instruments financiers (actions, ETF, matières premières, etc.), et suivre la performance de ses investissements à travers des graphiques et des tableaux. L'application intègre l'API Yahoo Finance pour récupérer les valeurs actuelles des instruments et permettre une gestion dynamique des portefeuilles. 
 
-Lien de la vidéo qui explique le fonctionnement : 
+Lien de la vidéo qui explique le fonctionnement : [Regarder la vidéo](Images/Video_Presentation_ApplicationWeb.mp4)
 
 ### Installation
 
